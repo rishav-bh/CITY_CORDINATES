@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Coordinates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: rgb(113, 197, 134);
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: none;
+            background-color: white;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: medium;
+            color: black;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>City Co-ordinates Finder</h1>
+    <form id="cityForm">
+        <input type="text" id="cityName" placeholder="Enter city name" required>
+        <button type="submit">Get Coordinates</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+     document.getElementById('cityForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const cityName = document.getElementById('cityName').value;
+    console.log("cityName", cityName);
+    const resultDiv = document.getElementById('result');
+
+    try {
+        const response = await fetch('http://127.0.0.1:7000/cities', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cityName }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('API Response Data:', data); // Log response data to debug
+
+            if (data && data.city) {
+                resultDiv.innerHTML = `<p><strong>City:</strong> ${data.city.cityName}</p>
+                                       <p><strong>Latitude:</strong> ${data.city.latitude}</p>
+                                       <p><strong>Longitude:</strong> ${data.city.longitude}</p>
+                                       <p><strong>Longitude:</strong> ${ data.city.countryName }</p >`;
+            } else {
+                resultDiv.innerHTML = '<p>No city data found.</p>';
+            }
+        } else {
+            resultDiv.innerHTML = '<p>Error: Unable to fetch city data.</p>';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        resultDiv.innerHTML = '<p>Error: Unable to fetch city data.</p>';
+    }
+});
+
+    </script>
+</body>
+
+</html>
