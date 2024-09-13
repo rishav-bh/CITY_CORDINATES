@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing Node.js dependencies...
+      - npm install
+  build:
+    commands:
+      - echo Building the application...
+      - npm run build
+  post_build:
+    commands:
+      - echo Starting the application...
+      - npm start
+
+artifacts:
+  files:
+    - '**/*'
