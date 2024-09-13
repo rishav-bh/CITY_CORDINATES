@@ -5,6 +5,8 @@ const axios = require("axios");
 const City = require("./models/City"); // Your City model
 const cors = require("cors");
 const path = require("path");
+const moment = require("moment");
+const now = moment();
 
 const app = express();
 const port = process.env.PORT || 7000;
@@ -44,7 +46,8 @@ app.post("/api/getCityCoordinates", async (req, res) => {
       const city = new City({
         cityName,
         latitude: lat,
-        longitude: lon
+        longitude: lon,
+        formattedDate: now.format("DD-MM-YYYY HH-mm-ss")
       });
 
       await city.save();
@@ -54,7 +57,8 @@ app.post("/api/getCityCoordinates", async (req, res) => {
         cityName,
         latitude: lat,
         longitude: lon,
-        message: "City data fetched and saved successfully",
+        formattedDate: now.format("DD-MM-YYYY HH-mm-ss"),
+        message: "City data fetched and saved successfully"
       });
     } else {
       return res.status(404).json({ message: "City not found" });
@@ -68,3 +72,18 @@ app.post("/api/getCityCoordinates", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+// console.log("Platform:", os.platform());
+// console.log("Total Memory:", os.totalmem());
+// console.log("Info of CPU:", os.cpus());
+// console.log("Free Memory:", os.freemem());
+
+// console.log("Current date and time:", now.format());
+// // formatted date
+// const formattedDate = now.format("DD-MM-YYYY HH-mm-ss")
+// console.log("Formatted date:", formattedDate);
+// // parsed date
+// const dateString = "13-09-2024";
+// const parsedDate = moment(dateString, 'DD-MM-YYYY');
+// console.log('Parsed date:', parsedDate.format('MMMM D, YYYY'));
+
+// console.log(now.format('dddd, MMMM Do YYYY, hh-mm-ss a'));
