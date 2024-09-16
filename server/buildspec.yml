@@ -3,14 +3,8 @@ version: 0.2
 phases:
   install:
     commands:
-      - cd backend
-      - echo Installing Node.js dependencies...
+      - cd backend   # or wherever `app.js` resides
       - npm install
-  post_build:
+  build:
     commands:
-      - echo Starting the application...
-      - node server.js
-
-artifacts:
-  files:
-    - '**/*'
+      - node app.js   # Run the app from the correct location
