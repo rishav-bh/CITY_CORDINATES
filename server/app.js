@@ -2,20 +2,26 @@ require("dotenv").config(); // Load environment variables
 const express = require("express");
 const mongoose = require("mongoose");
 const axios = require("axios");
-const City = require("./models/City"); // Your City model
+const City = require("./models/City"); // Assuming you have a Mongoose City model
 const cors = require("cors");
 const path = require("path");
 const moment = require("moment");
-const now = moment();
-const os =  require("os");
-
+const os = require("os");
 
 const app = express();
 const port = process.env.PORT || 7000;
+const now = moment();
 
+// Middleware setup
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(cors());
+app.use(cors()); // Enable CORS for all routes
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files
+
+// Check for required environment variables
+if (!process.env.MONGODB_URI || !process.env.WEATHER_API_KEY) {
+  console.error("Missing required environment variables. Exiting...");
+  process.exit(1);
+}
 
 // Connect to MongoDB
 mongoose
@@ -24,18 +30,20 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Failed to connect to MongoDB:", err));
+  .catch((err) => {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1);
+  });
 
-// Wrapper API route
+// API route to get city coordinates
 app.post("/api/getCityCoordinates", async (req, res) => {
   const { cityName } = req.body;
 
   if (!cityName) {
-    return res.status(400).send("City name is required");
+    return res.status(400).json({ message: "City name is required" });
   }
 
   try {
-    // Fetch coordinates from OpenWeatherMap API
     const response = await axios.get(
       `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.WEATHER_API_KEY}`
     );
@@ -44,23 +52,22 @@ app.post("/api/getCityCoordinates", async (req, res) => {
       const cityData = response.data[0];
       const { lat, lon } = cityData;
 
-      // Save city and coordinates to MongoDB
+      // Save city data in MongoDB
       const city = new City({
         cityName,
         latitude: lat,
         longitude: lon,
-        formattedDate: now.format("DD-MM-YYYY HH-mm-ss")
+        formattedDate: now.format("DD-MM-YYYY HH-mm-ss"),
       });
 
       await city.save();
 
-      // Send response back to the frontend
       return res.status(200).json({
         cityName,
         latitude: lat,
         longitude: lon,
         formattedDate: now.format("DD-MM-YYYY HH-mm-ss"),
-        message: "City data fetched and saved successfully"
+        message: "City data fetched and saved successfully",
       });
     } else {
       return res.status(404).json({ message: "City not found" });
@@ -71,20 +78,12 @@ app.post("/api/getCityCoordinates", async (req, res) => {
   }
 });
 
+// Serve React frontend if you're integrating React in the same project
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-console.log("Platform:", os.platform());
-// console.log("Total Memory:", os.totalmem());
-// console.log("Free Memory:", os.freemem());
-
-console.log("Current date and time:", now.format());
-// formatted date
-const formattedDate = now.format("DD-MM-YYYY HH-mm-ss")
-console.log("Formatted date:", formattedDate);
-// parsed date
-const dateString = "13-09-2024";
-const parsedDate = moment(dateString, 'DD-MM-YYYY');
-console.log('Parsed date:', parsedDate.format('MMMM D, YYYY'));
-
-console.log(now.format('dddd, MMMM Do YYYY, hh-mm-ss a'));
