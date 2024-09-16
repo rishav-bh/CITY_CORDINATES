@@ -7,4 +7,5 @@ phases:
       - npm install
   build:
     commands:
+      - cd server
       - node app.js
