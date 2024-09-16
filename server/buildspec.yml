@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
-      - cd backend   # or wherever `app.js` resides
+      - cd server   # or wherever `app.js` resides
       - npm install
   build:
     commands:
