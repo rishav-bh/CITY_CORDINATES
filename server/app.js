@@ -7,6 +7,8 @@ const cors = require("cors");
 const path = require("path");
 const moment = require("moment");
 const now = moment();
+const os =  require("os");
+
 
 const app = express();
 const port = process.env.PORT || 7000;
@@ -72,9 +74,8 @@ app.post("/api/getCityCoordinates", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-// console.log("Platform:", os.platform());
+console.log("Platform:", os.platform());
 // console.log("Total Memory:", os.totalmem());
-// console.log("Info of CPU:", os.cpus());
 // console.log("Free Memory:", os.freemem());
 
 console.log("Current date and time:", now.format());

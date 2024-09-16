@@ -1,4 +1,6 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose');
+
+
 
 const citySchema = new mongoose.Schema({
   cityName: { type: String, required: true },
