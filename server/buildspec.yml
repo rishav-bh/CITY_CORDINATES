@@ -1,10 +1,14 @@
 version: 0.2
 
+env:
+  variables:
+    MONGODB_URI: "mongodb://localhost:27017/citydb"
+    WEATHER_API_KEY: "0055592c2f7c996889fdf1672c3eb19e"
+
 phases:
   install:
     commands:
-      - cd server   # or wherever `app.js` resides
       - npm install
   build:
     commands:
-      - node app.js   # Run the app from the correct location
+      - node app.js
