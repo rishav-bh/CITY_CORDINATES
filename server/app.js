@@ -20,7 +20,7 @@ const _distpath = path.join(_dirname, "../public/city-cordinates/dist")
 app.use(express.static(_distpath))
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
   })
 ); 
 
@@ -85,6 +85,6 @@ app.post("/api/getCityCoordinates", async (req, res) => {
 
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://${port}/`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running at http://0.0.0.0:${port}`);
 });
