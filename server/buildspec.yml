@@ -3,13 +3,14 @@ version: 0.2
 phases:
   install:
     commands:
+      - echo Installing dependencies...
       - cd server
       - npm install
   build:
     commands:
-      - npm run build  # Optional, if you have a build step
+      - echo Packaging application...
+      - zip -r app.zip .  # Compress all files into app.zip in the current directory
+
 artifacts:
   files:
-    - '**/*'           # Include all files from the build
-  base-directory: server # Specify the directory to include in the artifact
-  discard-paths: no
+    - app.zip  # Specify the file to be output as an artifact
