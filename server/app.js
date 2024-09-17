@@ -14,8 +14,15 @@ const now = moment();
 
 // Middleware setup
 app.use(express.json());
-app.use(cors()); // Enable CORS for all routes
-app.use(express.static(path.join(__dirname, "public"))); // Serve static files
+// Enable CORS for all routes
+const _dirname = path.dirname("")
+const _distpath = path.join(_dirname, "../public/dist")
+app.use(express.static(_distpath))
+app.use(
+  cors({
+    origin: "*",
+  })
+); 
 
 // Check for required environment variables
 if (!process.env.MONGODB_URI || !process.env.WEATHER_API_KEY) {
@@ -75,12 +82,9 @@ app.post("/api/getCityCoordinates", async (req, res) => {
   }
 });
 
-// Serve React frontend if you're integrating React in the same project
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server running at http://${port}/`);
 });

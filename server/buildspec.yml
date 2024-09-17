@@ -14,3 +14,4 @@ phases:
 artifacts:
   files:
     - app.zip  # Specify the file to be output as an artifact
+   
