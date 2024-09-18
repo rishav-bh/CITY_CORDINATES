@@ -18,7 +18,10 @@ app.use(express.json());
 const _dirname = path.dirname("")
 const _distpath = path.join(_dirname, "../public/city-cordinates/dist")
 app.use(express.static(_distpath))
-app.use(cors()); 
+app.use(cors({
+  origin: "http://0.0.0.0/0"
+}
+)); 
 
 // Check for required environment variables
 if (!process.env.MONGODB_URI || !process.env.WEATHER_API_KEY) {
