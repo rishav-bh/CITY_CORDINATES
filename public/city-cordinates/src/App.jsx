@@ -22,7 +22,7 @@ function App() {
 
     try {
       // Sending a POST request to your API
-      const response = await fetch('http://65.2.161.246:7000/api/getCityCoordinates', {
+      const response = await fetch('http:// 3.110.84.179:7000/api/getCityCoordinates', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
