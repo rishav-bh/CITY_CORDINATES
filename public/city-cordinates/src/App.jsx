@@ -44,7 +44,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Know the co-ordinates of  your city 😊</h1>
+      <h1>Here is the co-ordinates of  your city 😊</h1>
       <form onSubmit={getCoordinates}>
         <input
           type="text"
