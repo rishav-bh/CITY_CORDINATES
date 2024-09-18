@@ -13,15 +13,20 @@ const port = process.env.PORT || 7000;
 const now = moment();
 
 // Middleware setup
+app.use(
+  cors({
+    origin: "http://0.0.0.0/0",
+  })
+); 
 app.use(express.json());
 // Enable CORS for all routes
-const _dirname = path.dirname("")
-const _distpath = path.join(_dirname, "../public/city-cordinates/dist/index.html")
-app.use(express.static(_distpath))
-app.use(cors({
-  origin: "http://0.0.0.0/0"
-}
-)); 
+app.use(express.static(path.join(__dirname, "../public/dist/index.html")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+
 
 // Check for required environment variables
 if (!process.env.MONGODB_URI || !process.env.WEATHER_API_KEY) {
