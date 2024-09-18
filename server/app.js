@@ -16,7 +16,7 @@ const now = moment();
 app.use(express.json());
 // Enable CORS for all routes
 const _dirname = path.dirname("")
-const _distpath = path.join(_dirname, "../public/city-cordinates/dist")
+const _distpath = path.join(_dirname, "../public/city-cordinates/dist/index.html")
 app.use(express.static(_distpath))
 app.use(cors({
   origin: "http://0.0.0.0/0"
