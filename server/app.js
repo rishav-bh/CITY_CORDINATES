@@ -20,12 +20,11 @@ app.use(
 ); 
 app.use(express.json());
 // Enable CORS for all routes
-app.use(express.static(path.join(__dirname, "../public/dist/index.html")));
+app.use(express.static(path.join(__dirname, "../public/city-cordinates/dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "../public/city-cordinates/dist", "index.html"));
 });
-
 
 
 // Check for required environment variables
